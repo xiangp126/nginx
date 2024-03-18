@@ -3,18 +3,20 @@
 CFLAGS="-pipe -W -Wall -Wpointer-arith -Wno-unused -g3"
 prefix="/opt/nginx"
 patch_file="patch/nginx-1.9.2.patch"
-checkout_tag="release-1.9.2"
+# checkout_tag="release-1.9.2"
+checkout_tag="learn-1.9.2"
+user_notation="@@@@"
 
-git branch | grep "$checkout_tag"
+git branch | grep "$checkout_tag" 2>&1 > /dev/null
 if [ $? -ne 0 ]; then
-    echo "Checking out to tag $checkout_tag"
+    echo "$user_notation Checking out to tag $checkout_tag"
     git checkout $checkout_tag
     if [ $? -ne 0 ]; then
-        echo "git checkout failed"
+        echo "$user_notation git checkout failed"
         exit 1
     fi
 else
-    echo "Already checked out to tag $checkout_tag"
+    echo "$user_notation Already in branch $checkout_tag"
 
 fi
 
@@ -22,7 +24,7 @@ export CFLAGS
 # ./auto/configure --prefix=/opt/nginx --with-threads --with-http_ssl_module
 ./auto/configure --prefix=$prefix --with-threads
 if [ $? -ne 0 ]; then
-    echo "configure failed"
+    echo "$user_notation configure failed"
     exit 1
 fi
 
@@ -30,12 +32,12 @@ fi
 grep "CRYPT_DATA_INTERNAL_SIZE" src/os/unix/ngx_user.c
 if [ $? -ne 0 ]; then
     if [ ! -f $patch_file ]; then
-        echo "Patch file $patch_file does not exist"
+        echo "$user_notation Patch file $patch_file does not exist"
         exit 1
     fi
     git apply $patch_file
     if [ $? -ne 0 ]; then
-    	echo "Apply patch failed"
+        echo "$user_notation Apply patch failed"
     	exit 1
     fi
 else
@@ -44,22 +46,22 @@ fi
 
 make -j12
 if [ $? -ne 0 ]; then
-    echo "make failed"
+    echo "$user_notation make failed"
     exit 1
 fi
-echo "Congratulations! You have successfully built nginx."
+echo "$user_notation Congratulations! You have successfully built nginx."
 exit 0
 
 if [ -d $prefix ]; then
     if [ "$(ls -A $prefix)" ]; then
-	echo "Destination directory $prefix exists and not empty, delete it first"
+	echo "$user_notation Destination directory $prefix exists and not empty, delete it first"
 	sudo rm -rf $prefix
     fi
 fi
 
 sudo make install
 if [ $? -ne 0 ]; then
-    echo "make install failed"
+    echo "$user_notation make install failed"
     exit 1
 fi
-echo "Congratulations! You have successfully installed nginx to $prefix."
+echo "$user_notation Congratulations! You have successfully installed nginx to $prefix."
