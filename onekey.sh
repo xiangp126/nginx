@@ -41,7 +41,7 @@ if [ $? -ne 0 ]; then
     	exit 1
     fi
 else
-    echo  "Patch already applied"
+    echo "$user_notation Patch already applied"
 fi
 
 make -j12
@@ -50,6 +50,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "$user_notation Congratulations! You have successfully built nginx."
+echo "$user_notation Now you can run 'sudo make install' to install nginx to $prefix."
 exit 0
 
 if [ -d $prefix ]; then
