@@ -94,7 +94,7 @@ typedef struct {
     ngx_str_t         key;
     ngx_str_t         value;
     u_char           *lowcase_key;
-} ngx_table_elt_t;
+} ngx_table_elt_t;  // elt is short for element
 
 
 void *ngx_hash_find(ngx_hash_t *hash, ngx_uint_t key, u_char *name, size_t len);

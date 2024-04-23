@@ -4,7 +4,7 @@ CFLAGS="-pipe -W -Wall -Wpointer-arith -Wno-unused -g3"
 prefix="/opt/nginx"
 patch_file="patch/nginx-1.9.2.patch"
 # checkout_tag="release-1.9.2"
-checkout_tag="learn-1.9.2"
+checkout_tag="learn-1.15.0"
 user_notation="@@@@"
 
 git branch | grep "$checkout_tag" 2>&1 > /dev/null
@@ -38,7 +38,7 @@ if [ $? -ne 0 ]; then
     git apply $patch_file
     if [ $? -ne 0 ]; then
         echo "$user_notation Apply patch failed"
-    	exit 1
+        exit 1
     fi
 else
     echo "$user_notation Patch already applied"
@@ -55,8 +55,8 @@ exit 0
 
 if [ -d $prefix ]; then
     if [ "$(ls -A $prefix)" ]; then
-	echo "$user_notation Destination directory $prefix exists and not empty, delete it first"
-	sudo rm -rf $prefix
+        echo "$user_notation Destination directory $prefix exists and not empty, delete it first"
+        sudo rm -rf $prefix
     fi
 fi
 
